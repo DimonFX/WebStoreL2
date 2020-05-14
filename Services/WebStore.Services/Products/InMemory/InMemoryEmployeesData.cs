@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using WebStore.Data;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Models;
+using WebStore.Domain.Models;
+using WebStore.Interfaces.Services;
 
-namespace WebStore.Infrastructure.Services.InMemory
+namespace WebStore.Services.Products.InMemory
 {
     public class InMemoryEmployeesData : IEmployeesData
     {
@@ -17,7 +17,7 @@ namespace WebStore.Infrastructure.Services.InMemory
 
         public void Add(Employee Employee)
         {
-            if(Employee is null)
+            if (Employee is null)
                 throw new ArgumentNullException(nameof(Employee));
 
             if (_Employees.Contains(Employee)) return;
@@ -27,13 +27,13 @@ namespace WebStore.Infrastructure.Services.InMemory
 
         public void Edit(int id, Employee Employee)
         {
-            if(Employee is null)
+            if (Employee is null)
                 throw new ArgumentNullException(nameof(Employee));
 
             if (_Employees.Contains(Employee)) return;
 
             var db_employee = GetById(id);
-            if(db_employee is null)
+            if (db_employee is null)
                 return;
 
             db_employee.SurName = Employee.SurName;
@@ -51,6 +51,6 @@ namespace WebStore.Infrastructure.Services.InMemory
             return _Employees.Remove(db_employee);
         }
 
-        public void SaveChanges() {  }
+        public void SaveChanges() { }
     }
 }

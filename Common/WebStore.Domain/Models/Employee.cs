@@ -1,7 +1,7 @@
-﻿namespace WebStore.Models
+﻿namespace WebStore.Domain.Models
 {
     public class Employee
-    { 
+    {
         public int Id { get; set; }
 
         public string FirstName { get; set; }
