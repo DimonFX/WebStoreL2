@@ -63,12 +63,17 @@ namespace WebStore
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
                 opt.AccessDeniedPath = "/Account/AccessDenied";
-
+                //Необходимо менять идентификатор сеанса, когда пользователь был не залогинин и пора залогиниться, это повышает безовасность
                 opt.SlidingExpiration = true;
             });
-
+            /*
+             * Добавляем все контроллеры
+             * Это требование ASP NET CORE 3.1
+             * + в версии 3.1 убрали автоматическую компиляцию представлений, поэтому мы ее доавбляем - 
+             *  - нужно что бы можно  было править представление и после этого сразу могли видеть изменения!!!
+             */
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            //Регистрируем наши собственные сервисы
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<ICartService, CookiesCartService>();
@@ -81,7 +86,9 @@ namespace WebStore
 
             if (env.IsDevelopment())
             {
+                //Отражает подробности об ошибках
                 app.UseDeveloperExceptionPage();
+                //добавляет связь с браузером, что бы была возможность автоматом обновлять во всех браузерах (даже различных) наши веб страницы
                 app.UseBrowserLink();
             }
 
