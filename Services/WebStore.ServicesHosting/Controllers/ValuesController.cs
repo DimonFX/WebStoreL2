@@ -12,7 +12,7 @@ namespace WebStore.ServicesHosting.Controllers
     public class ValuesController : ControllerBase
     {
         private static readonly List<string> _Values = Enumerable.Range(1, 10).Select(i => $"Value {i}").ToList();
-
+        //private static readonly List<double> _MyTest = Enumerable.Range(1, 20).Select(i =>Convert.ToDouble(i+i*i)).ToList();
         //public ValuesController()
         //{
 
