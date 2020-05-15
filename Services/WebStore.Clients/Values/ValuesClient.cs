@@ -12,7 +12,7 @@ namespace WebStore.Clients.Values
 {
     public class ValuesClient : BaseClient, IValueServices
     {
-        public ValuesClient(IConfiguration Configuration, string ServiceAdress):base(Configuration, "api/values")
+        public ValuesClient(IConfiguration Configuration):base(Configuration, "api/values")
         {
 
         }
