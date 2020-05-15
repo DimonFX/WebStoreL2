@@ -14,5 +14,9 @@ namespace WebStore.Controllers
         public WebAPITestController(IValueServices ValueServices) => _ValueServices = ValueServices;
 
         public IActionResult Index() => View(_ValueServices.Get());
+        private readonly IMyTestService _myTestService;
+        public WebAPITestController(IMyTestService myTestService) => _myTestService = myTestService;
+
+        public IActionResult IndexMyTest() => View(_myTestService.Get());
     }
 }
