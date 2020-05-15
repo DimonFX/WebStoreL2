@@ -22,7 +22,7 @@ namespace WebStore.Interfaces.Api
         /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        HttpStatusCode Upt(int id, string value);
+        HttpStatusCode Update(int id, string value);
         HttpStatusCode Delete(int id);
 
     }
