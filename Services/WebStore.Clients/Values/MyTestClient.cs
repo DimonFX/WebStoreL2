@@ -12,7 +12,7 @@ namespace WebStore.Clients.Values
 {
     public class MyTestClient : BaseClient,IMyTestService
     {
-        public MyTestClient(IConfiguration Configuration) : base(Configuration, "api/MyTest")
+        public MyTestClient(IConfiguration Configuration) : base(Configuration, "api/mytest")
         {
 
         }
