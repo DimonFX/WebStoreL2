@@ -29,15 +29,16 @@ namespace WebStore.Clients.Base
             };
 
         }
-        protected T Get<T>(string url) where T : new() => GetAsync<T>(url).Result;
-        protected async Task<T>GetAsync<T>(string url, CancellationToken Cancel = default) where T: new()
+        protected T Get<T>(string url)/* where T : new() */=> GetAsync<T>(url).Result;
+        protected async Task<T>GetAsync<T>(string url, CancellationToken Cancel = default)/* where T: new()*/
         {
             var respronse = await _Client.GetAsync(url, Cancel);
-            if (respronse.IsSuccessStatusCode)
-            {
-                return await respronse.Content.ReadAsAsync<T>(Cancel);
-            }
-            return new T();
+            return await respronse.EnsureSuccessStatusCode().Content.ReadAsAsync<T>(Cancel);
+            //if (respronse.IsSuccessStatusCode)
+            //{
+            //    return await respronse.Content.ReadAsAsync<T>(Cancel);
+            //}
+            //return new T();
         }
         protected HttpResponseMessage Post<T>(string url, T item) => PostAsync(url, item).Result;
         protected async Task<HttpResponseMessage> PostAsync<T>(string url, T item, CancellationToken Cancel = default)
