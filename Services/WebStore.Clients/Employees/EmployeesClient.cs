@@ -16,7 +16,7 @@ namespace WebStore.Clients.Employees
 
         }
 
-        public void Add(Employee Employee) => Post(_ServiceAddress, WebAPI.Employees);
+        public void Add(Employee Employee) => Post(_ServiceAddress, Employee);
 
         public bool Delete(int id) => Delete($"{_ServiceAddress}/{id}").IsSuccessStatusCode;
 
