@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain;
 
 namespace WebStore.ServicesHosting.Controllers
 {
-    [Route("api/values")]
+    [Route(WebAPI.Values)]
     [ApiController]
     public class ValuesController : ControllerBase
     {
