@@ -6,8 +6,9 @@ namespace WebStore.Domain
 {
     public class WebAPI
     {
-        public const string Values = "api/values";
-        public const string Employees = "api/employees";
-        public const string MyTestClient = "api/mytest";
+        public const string Values = "api/v1/values";
+        public const string Employees = "api/v1/employees";
+        public const string MyTestClient = "api/v1/mytest";
+        public const string Products = "api/v1/products";
     }
 }
