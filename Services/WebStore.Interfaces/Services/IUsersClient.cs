@@ -6,7 +6,7 @@ using WebStore.Domain.Entities.Identity;
 
 namespace WebStore.Interfaces.Services
 {
-    public interface IUserClient:
+    public interface IUsersClient:
         IUserRoleStore<User>,
         IUserPasswordStore<User>,
         IUserEmailStore<User>,
