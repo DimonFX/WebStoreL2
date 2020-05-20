@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebStore.Clients.Base
 {
-    public abstract class BaseClient
+    public abstract class BaseClient:IDisposable
     {
         protected readonly string _ServiceAddress;
         protected readonly HttpClient _Client;
@@ -58,6 +58,24 @@ namespace WebStore.Clients.Base
         protected async Task<HttpResponseMessage> DeleteAsync(string url, CancellationToken Cancel = default)
         {
             return await _Client.DeleteAsync(url,Cancel);
+        }
+        //~BaseClient()
+        //{
+        //    Dispose(false);
+        //}
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private bool _Disposed;
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (_Disposed || !Disposing) return;
+
+            _Disposed = true;
+            _Client.Dispose();
+
         }
     }
 }
