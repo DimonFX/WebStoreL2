@@ -19,7 +19,7 @@ namespace WebStore.Domain.DTO.Identity
     {
 
     }
-    public class RemoveClaimDTP : ClaimDTO
+    public class RemoveClaimDTO : ClaimDTO
     {
 
     }
