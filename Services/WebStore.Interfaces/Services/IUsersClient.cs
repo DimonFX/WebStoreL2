@@ -13,7 +13,8 @@ namespace WebStore.Interfaces.Services
         IUserPhoneNumberStore<User>,
         IUserTwoFactorStore<User>,
         IUserLockoutStore<User>,
-        IUserLoginStore<User>
+        IUserLoginStore<User>,
+        IUserClaimStore<User>
     {
 
     }
