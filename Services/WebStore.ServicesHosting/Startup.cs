@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
@@ -58,12 +61,31 @@ namespace WebStore.ServicesHosting
             services.AddScoped<ICartService, CookiesCartService>();
             services.AddScoped<IOrderService, SqlOrderService>();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//Ќужен что бы сервис корзина смог создатьс€
+
             services.AddControllers();
+
+            services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "WebStore.API", Version = "v1" });
+
+                const string domain_doc_xml = "WebStore.Domain.xml";
+                const string web_api_doc_xml = "WebStore.ServicesHosting.xml";
+                const string debug_path = @"bin\debug\netcoreapp3.1";
+
+                opt.IncludeXmlComments(web_api_doc_xml);
+                if (File.Exists(domain_doc_xml))
+                    opt.IncludeXmlComments(domain_doc_xml);
+                else if (File.Exists(Path.Combine(debug_path, domain_doc_xml)))
+                    opt.IncludeXmlComments(Path.Combine(debug_path, domain_doc_xml));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDBInitializer db)
         {
+            db.Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,6 +94,15 @@ namespace WebStore.ServicesHosting
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            //”казываем адрес где будет доступен документ (техническа€ документаци€ по api), 
+            //  котороа€ может быть использована дл€ автоматической генерации описани€
+            app.UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "WebStore.API");
+                opt.RoutePrefix = string.Empty;
+            });
 
             app.UseEndpoints(endpoints =>
             {

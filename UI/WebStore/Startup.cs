@@ -1,24 +1,20 @@
-using System;
-using Microsoft.AspNetCore.Builder;
+п»їusing Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using WebStore.Clients.Employees;
+using WebStore.Clients.Identity;
 using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
-using WebStore.Services.Data;
 using WebStore.Services.Products.InCookies;
-using WebStore.Services.Products.InMemory;
-using WebStore.Services.Products.InSQL;
 
 namespace WebStore
 {
@@ -30,13 +26,28 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebStoreDB>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<WebStoreDBInitializer>();
+            //services.AddDbContext<WebStoreDB>(opt =>
+            //    opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddTransient<WebStoreDBInitializer>();
 
             services.AddIdentity<User, Role>()
-               .AddEntityFrameworkStores<WebStoreDB>()
+               //.AddEntityFrameworkStores<WebStoreDB>()
                .AddDefaultTokenProviders();
+
+            #region WebAPI Identity clients Service
+            services
+                .AddTransient<IUserStore<User>, UsersClient>()
+                .AddTransient<IUserPasswordStore<User>, UsersClient>()
+                .AddTransient<IUserEmailStore<User>, UsersClient>()
+                .AddTransient<IUserPhoneNumberStore<User>, UsersClient>()
+                .AddTransient<IUserTwoFactorStore<User>, UsersClient>()
+                .AddTransient<IUserLockoutStore<User>, UsersClient>()
+                .AddTransient<IUserClaimStore<User>, UsersClient>()
+                .AddTransient<IUserLoginStore<User>, UsersClient>();
+            services
+               .AddTransient<IRoleStore<Role>, RolesClient>();
+
+            #endregion
 
             services.Configure<IdentityOptions>(opt =>
             {
@@ -64,17 +75,17 @@ namespace WebStore
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
                 opt.AccessDeniedPath = "/Account/AccessDenied";
-                //Необходимо менять идентификатор сеанса, когда пользователь был не залогинин и пора залогиниться, это повышает безовасность
+                //РќРµРѕР±С…РѕРґРёРјРѕ РјРµРЅСЏС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃРµР°РЅСЃР°, РєРѕРіРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р±С‹Р» РЅРµ Р·Р°Р»РѕРіРёРЅРёРЅ Рё РїРѕСЂР° Р·Р°Р»РѕРіРёРЅРёС‚СЊСЃСЏ, СЌС‚Рѕ РїРѕРІС‹С€Р°РµС‚ Р±РµР·РѕРІР°СЃРЅРѕСЃС‚СЊ
                 opt.SlidingExpiration = true;
             });
             /*
-             * Добавляем все контроллеры
-             * Это требование ASP NET CORE 3.1
-             * + в версии 3.1 убрали автоматическую компиляцию представлений, поэтому мы ее доавбляем - 
-             *  - нужно что бы можно  было править представление и после этого сразу могли видеть изменения!!!
+             * Р”РѕР±Р°РІР»СЏРµРј РІСЃРµ РєРѕРЅС‚СЂРѕР»Р»РµСЂС‹
+             * Р­С‚Рѕ С‚СЂРµР±РѕРІР°РЅРёРµ ASP NET CORE 3.1
+             * + РІ РІРµСЂСЃРёРё 3.1 СѓР±СЂР°Р»Рё Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєСѓСЋ РєРѕРјРїРёР»СЏС†РёСЋ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№, РїРѕСЌС‚РѕРјСѓ РјС‹ РµРµ РґРѕР°РІР±Р»СЏРµРј - 
+             *  - РЅСѓР¶РЅРѕ С‡С‚Рѕ Р±С‹ РјРѕР¶РЅРѕ  Р±С‹Р»Рѕ РїСЂР°РІРёС‚СЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ Рё РїРѕСЃР»Рµ СЌС‚РѕРіРѕ СЃСЂР°Р·Сѓ РјРѕРіР»Рё РІРёРґРµС‚СЊ РёР·РјРµРЅРµРЅРёСЏ!!!
              */
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            //Регистрируем наши собственные сервисы
+            //Р РµРіРёСЃС‚СЂРёСЂСѓРµРј РЅР°С€Рё СЃРѕР±СЃС‚РІРµРЅРЅС‹Рµ СЃРµСЂРІРёСЃС‹
             //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             //services.AddScoped<IProductData, SqlProductData>();
@@ -86,15 +97,15 @@ namespace WebStore
             services.AddScoped<IMyTestService, MyTestClient>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDBInitializer db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, WebStoreDBInitializer db*/)
         {
-            db.Initialize();
+            //db.Initialize();
 
             if (env.IsDevelopment())
             {
-                //Отражает подробности об ошибках
+                //РћС‚СЂР°Р¶Р°РµС‚ РїРѕРґСЂРѕР±РЅРѕСЃС‚Рё РѕР± РѕС€РёР±РєР°С…
                 app.UseDeveloperExceptionPage();
-                //добавляет связь с браузером, что бы была возможность автоматом обновлять во всех браузерах (даже различных) наши веб страницы
+                //РґРѕР±Р°РІР»СЏРµС‚ СЃРІСЏР·СЊ СЃ Р±СЂР°СѓР·РµСЂРѕРј, С‡С‚Рѕ Р±С‹ Р±С‹Р»Р° РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ Р°РІС‚РѕРјР°С‚РѕРј РѕР±РЅРѕРІР»СЏС‚СЊ РІРѕ РІСЃРµС… Р±СЂР°СѓР·РµСЂР°С… (РґР°Р¶Рµ СЂР°Р·Р»РёС‡РЅС‹С…) РЅР°С€Рё РІРµР± СЃС‚СЂР°РЅРёС†С‹
                 app.UseBrowserLink();
             }
 
