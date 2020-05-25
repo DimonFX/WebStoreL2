@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+п»їusing Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -61,7 +61,7 @@ namespace WebStore.ServicesHosting
             services.AddScoped<ICartService, CookiesCartService>();
             services.AddScoped<IOrderService, SqlOrderService>();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//Нужен что бы сервис корзина смог создаться
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//РќСѓР¶РµРЅ С‡С‚Рѕ Р±С‹ СЃРµСЂРІРёСЃ РєРѕСЂР·РёРЅР° СЃРјРѕРі СЃРѕР·РґР°С‚СЊСЃСЏ
 
             services.AddControllers();
 
@@ -96,8 +96,8 @@ namespace WebStore.ServicesHosting
             app.UseAuthorization();
 
             app.UseSwagger();
-            //Указываем адрес где будет доступен документ (техническая документация по api), 
-            //  котороая может быть использована для автоматической генерации описания
+            //РЈРєР°Р·С‹РІР°РµРј Р°РґСЂРµСЃ РіРґРµ Р±СѓРґРµС‚ РґРѕСЃС‚СѓРїРµРЅ РґРѕРєСѓРјРµРЅС‚ (С‚РµС…РЅРёС‡РµСЃРєР°СЏ РґРѕРєСѓРјРµРЅС‚Р°С†РёСЏ РїРѕ api), 
+            //  РєРѕС‚РѕСЂРѕР°СЏ РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅР° РґР»СЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕР№ РіРµРЅРµСЂР°С†РёРё РѕРїРёСЃР°РЅРёСЏ
             app.UseSwaggerUI(opt =>
             {
                 opt.SwaggerEndpoint("/swagger/v1/swagger.json", "WebStore.API");

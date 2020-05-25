@@ -86,6 +86,11 @@ namespace WebStore
              */
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             //Регистрируем наши собственные сервисы
+            /*
+             * AddTransient - каждый раз будет создаваться экземпляр сервиса. Предпочтителен для многопоточного режима
+             * AddScoped - один экземпляр на область видимости
+             * AddSingleton - один объект на все время жизни проекта, не рекомендуется для многопоточной рабюоты - возникнут проблемы
+             */
             //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             //services.AddScoped<IProductData, SqlProductData>();
