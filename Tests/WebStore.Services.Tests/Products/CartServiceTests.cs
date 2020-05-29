@@ -21,7 +21,9 @@ namespace WebStore.Services.Tests.Products
         private Cart _Cart;
 
         private Mock<IProductData> _ProductDataMock;
-        //private Mock<ICartStore> _CartStoreMock;
+        private Mock<ICartStore> _CartStoreMock;
+
+        private ICartService _CartService;
         [TestInitialize]
         public void TestInitialize()
         {
@@ -59,9 +61,11 @@ namespace WebStore.Services.Tests.Products
                         Section = new SectionDTO { Id = 2, Name = "Section 2"}
                     },
                 });
+            _CartStoreMock = new Mock<ICartStore>();
+            _CartStoreMock.Setup(c => c.Cart).Returns(_Cart);
 
+            _CartService = new CartService(_ProductDataMock.Object, _CartStoreMock.Object);
         }
-        private ICartService _CartService;
         [TestMethod]
         public void Cart_Class_ItemsCount_returns_Correct_Quantity()
         {

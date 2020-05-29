@@ -94,12 +94,11 @@ namespace WebStore
              * AddScoped - один экземпляр на область видимости
              * AddSingleton - один объект на все время жизни проекта, не рекомендуется для многопоточной рабюоты - возникнут проблемы
              */
-            //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+
             services.AddSingleton<IEmployeesData, EmployeesClient>();
-            //services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<IProductData, ProductsClient>();
-            services.AddScoped<ICartService, CookiesCartService>();
-            //services.AddScoped<IOrderService, SqlOrderService>();
+            services.AddScoped<ICartStore, CookiesCartStore>();
+            services.AddScoped<ICartService, WebStore.Services.Products.CartService>();
             services.AddScoped<IOrderService, OrdersClient>();
             services.AddScoped<IValueServices, ValuesClient>();
             services.AddScoped<IMyTestService, MyTestClient>();

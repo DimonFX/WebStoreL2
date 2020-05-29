@@ -11,7 +11,8 @@ using WebStore.Services.Mapping;
 
 namespace WebStore.Services.Products.InCookies
 {
-    public class CookiesCartService : ICartService
+   [Obsolete("Использовать сервисы CookiesCartStore и CartService",true) ]
+    public class CartService : ICartService
     {
         private readonly string _CartName;
         private readonly IProductData _ProductData;
@@ -43,7 +44,7 @@ namespace WebStore.Services.Products.InCookies
             cookies.Append(_CartName, cookie, new CookieOptions { Expires = DateTime.Now.AddDays(15) });
         }
 
-        public CookiesCartService(IProductData ProductData, IHttpContextAccessor HttpContextAccessor)
+        public CartService(IProductData ProductData, IHttpContextAccessor HttpContextAccessor)
         {
             _ProductData = ProductData;
             _HttpContextAccessor = HttpContextAccessor;
