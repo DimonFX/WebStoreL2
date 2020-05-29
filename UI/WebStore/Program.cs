@@ -16,7 +16,7 @@ namespace WebStore
             Host.CreateDefaultBuilder(args)
             .ConfigureLogging((host, log) =>
             {
-                log.ClearProviders();
+                //log.ClearProviders();
                 //log.AddProvider(new ConsoleLoggerProvider());
                 //log.AddConsole(opt=> opt.IncludeScopes=true);
                 //log.AddEventLog(opt => opt.LogName = "WebStore");//Провайдер, который занимается сохранением событий в системынй журнал ОС
