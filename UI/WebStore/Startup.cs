@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using WebStore.Clients.Employees;
 using WebStore.Clients.Identity;
@@ -12,9 +13,11 @@ using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Infrastruction.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Products.InCookies;
+using WebStoreLogger;
 
 namespace WebStore
 {
@@ -86,6 +89,11 @@ namespace WebStore
              */
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             //Регистрируем наши собственные сервисы
+            /*
+             * AddTransient - каждый раз будет создаваться экземпляр сервиса. Предпочтителен для многопоточного режима
+             * AddScoped - один экземпляр на область видимости
+             * AddSingleton - один объект на все время жизни проекта, не рекомендуется для многопоточной рабюоты - возникнут проблемы
+             */
             //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
             services.AddSingleton<IEmployeesData, EmployeesClient>();
             //services.AddScoped<IProductData, SqlProductData>();
@@ -97,9 +105,11 @@ namespace WebStore
             services.AddScoped<IMyTestService, MyTestClient>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, WebStoreDBInitializer db*/)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
         {
             //db.Initialize();
+
+            log.AddLog4Net();
 
             if (env.IsDevelopment())
             {
@@ -116,6 +126,9 @@ namespace WebStore
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
