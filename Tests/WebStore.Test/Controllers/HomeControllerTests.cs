@@ -9,7 +9,7 @@ using Assert = Xunit.Assert;//Создадим псевдоним класса A
 namespace WebStore.Test.Controllers
 {
     [TestClass]
-    public class HomeControllerTest
+    public class HomeControllerTests
     {
         [TestMethod]
         public void Index_Returns_View()
