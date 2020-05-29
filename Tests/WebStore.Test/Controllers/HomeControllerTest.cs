@@ -60,6 +60,21 @@ namespace WebStore.Test.Controllers
             var result = controller.ContactUs();
             Assert.IsType<ViewResult>(result);
         }
+        [TestMethod, ExpectedException(typeof(ApplicationException))]
+        public void Throw_throw_ApplicationException()
+        {
+            var controller = new HomeController();
+            var result = controller.Throw(string.Empty);
+        }
+        [TestMethod]
+        public void Throw_throw_ApplicationException_whith_Message()
+        {
+            var controller = new HomeController();
+            const string expected_message_string = "Message!";
+            //var result = controller.Throw(string.Empty);
+            var exception = Assert.Throws<ApplicationException>(() => controller.Throw(expected_message_string));
+            Assert.Equal(expected_message_string, exception.Message);
+        }
 
     }
 }

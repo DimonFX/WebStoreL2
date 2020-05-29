@@ -22,3 +22,7 @@
 2020-05-29 12:19:16,064 [1] ?     - Application started. Press Ctrl+C to shut down.
 2020-05-29 12:19:16,069 [1] ?     - Hosting environment: Development
 2020-05-29 12:19:16,074 [1] ?     - Content root path: D:\Geekbrains\ASP. NET Core\Level2\WebStore\Services\WebStore.ServicesHosting
+2020-05-29 21:50:57,429 [1] ?     - Now listening on: http://localhost:5001
+2020-05-29 21:50:57,446 [1] ?     - Application started. Press Ctrl+C to shut down.
+2020-05-29 21:50:57,451 [1] ?     - Hosting environment: Development
+2020-05-29 21:50:57,456 [1] ?     - Content root path: D:\Geekbrains\ASP. NET Core\Level2\WebStore\Services\WebStore.ServicesHosting
