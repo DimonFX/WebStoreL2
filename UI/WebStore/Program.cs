@@ -9,6 +9,10 @@ namespace WebStore
 {
     public class Program
     {
+        /*dotnet restore
+         dotnet build --no-restore
+         dotnet test --no-build
+         dotnet publish*/
         public static void Main(string[] args) =>
             CreateHostBuilder(args)
                .Build()
