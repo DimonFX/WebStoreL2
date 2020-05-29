@@ -75,6 +75,21 @@ namespace WebStore.Test.Controllers
             var exception = Assert.Throws<ApplicationException>(() => controller.Throw(expected_message_string));
             Assert.Equal(expected_message_string, exception.Message);
         }
+        [TestMethod]
+        public void ErrorStatus_404_RedirectTo_error404()
+        {
+            var controller = new HomeController();
+            const string status404 = "404";
+
+            var result = controller.ErrorStatus(status404);
+
+            //Assert.NotNull(result);
+
+            var redirect_to_action = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Null(redirect_to_action.ControllerName);
+            var a = nameof(HomeController.Error404);
+            Assert.Equal(nameof(HomeController.Error404), redirect_to_action.ActionName);
+        }
 
     }
 }
