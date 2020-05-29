@@ -1,13 +1,15 @@
+using System;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
-
+using Serilog;
 namespace WebStore
 {
     public class Program
     {
-        public static void Main(string[] args) => 
+        public static void Main(string[] args) =>
             CreateHostBuilder(args)
                .Build()
                .Run();
@@ -30,6 +32,15 @@ namespace WebStore
                 .ConfigureWebHostDefaults(builder =>
                 {
                     builder.UseStartup<Startup>();
-                });
+                })
+               .UseSerilog((host, log) => log.ReadFrom.Configuration(host.Configuration)
+                   .MinimumLevel.Debug()
+                   .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Error)
+                   .Enrich.FromLogContext()
+                   .WriteTo.Console(
+                        outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
+                   .WriteTo.RollingFile($@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
+                   .WriteTo.File(new Serilog.Formatting.Json.JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+                   .WriteTo.Seq("http://localhost:5341/"));
     }
 }
