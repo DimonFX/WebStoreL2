@@ -16,13 +16,15 @@ namespace WebStore.Services.Products.InSQL
 
         public SqlProductData(WebStoreDB db) => _db = db;
 
-        public IEnumerable<Section> GetSections() => _db.Sections
+        public IEnumerable<SectionDTO> GetSections() => _db.Sections
            //.Include(section => section.Products)
-           .AsEnumerable();
+           .AsEnumerable()
+            .ToDTO();
 
-        public IEnumerable<Brand> GetBrands() => _db.Brands
+        public IEnumerable<BrandDTO> GetBrands() => _db.Brands
            //.Include(brand => brand.Products)
-           .AsEnumerable();
+           .AsEnumerable()
+            .ToDTO();
 
         public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null)
         {
@@ -47,5 +49,9 @@ namespace WebStore.Services.Products.InSQL
            .Include(p => p.Section)
            .FirstOrDefault(p => p.Id == id)
             .ToDTO();
+
+        public SectionDTO GetSectionById(int id) => _db.Sections.FirstOrDefault(s => s.Id == id).ToDTO();
+
+        public BrandDTO GetBrandById(int id) => _db.Brands.FirstOrDefault(s => s.Id == id).ToDTO();
     }
 }
