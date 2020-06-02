@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WebStore.Domain.DTO.Products;
 using WebStore.Domain.Entities;
 
@@ -19,5 +18,6 @@ namespace WebStore.Services.Mapping
             Id = Brand.Id,
             Name = Brand.Name
         };
+        public static IEnumerable<BrandDTO> ToDTO(this IEnumerable<Brand> Sections) => Sections?.Select(ToDTO);
     }
 }

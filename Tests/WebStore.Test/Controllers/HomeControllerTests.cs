@@ -20,22 +20,22 @@ namespace WebStore.Test.Controllers
             Assert.IsType<ViewResult>(result);
         }
 
-        [TestMethod]
-        public void Blog_Returns_View()
-        {
-            var controller = new HomeController();
+        //[TestMethod]
+        //public void Blog_Returns_View()
+        //{
+        //    var controller = new HomeController();
 
-            var result = controller.Blog();
-            Assert.IsType<ViewResult>(result);
-        }
-        [TestMethod]
-        public void BlogSingle_Returns_View()
-        {
-            var controller = new HomeController();
+        //    var result = controller.Blog();
+        //    Assert.IsType<ViewResult>(result);
+        //}
+        //[TestMethod]
+        //public void BlogSingle_Returns_View()
+        //{
+        //    var controller = new HomeController();
 
-            var result = controller.BlogSingle();
-            Assert.IsType<ViewResult>(result);
-        }
+        //    var result = controller.BlogSingle();
+        //    Assert.IsType<ViewResult>(result);
+        //}
         [TestMethod]
         public void SomeAction_Returns_View()
         {
