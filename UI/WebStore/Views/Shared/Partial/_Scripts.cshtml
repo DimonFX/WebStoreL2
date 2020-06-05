@@ -20,6 +20,8 @@
         Cart.init({
             getCartViewLink: "@Url.Action("GetCartView","Cart")",
             AddToCartLink: "@Url.Action("AddToCartAPI","Cart")",
+            decrementLink: "@Url.Action("DecrementLinkAPI", "Cart")",
+            removeFromCartLink: "@Url.Action("RemoveFromCartLinkAPI", "Cart")",
         });
     })
 
