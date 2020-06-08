@@ -21,14 +21,25 @@
                     <partial name="Partial/_FeaturesItems" model="@Model.Products" />
                 </div>
 
-                <paging page-model ="Model.PageViewModel"
+                <paging page-model="Model.PageViewModel"
                         page-action="Shop"
                         page-url-SectionId="@Model.SectionId"
-                        page-url-BrandId ="@Model.BrandId">
-                    
+                        page-url-BrandId="@Model.BrandId">
+
 
                 </paging>
             </div>
         </div>
     </div>
 </section>
+@section Scripts{
+    <script src="~/lib/jquery-loading-overlay/loadingoverlay.min.js"></script>
+    <script src="~/js/Catalog/CatalogLogik.js" asp-append-version="true"></script>
+    <script>
+        $(function() {
+            Catalog.init({
+                getUrl: "@Url.Action("GetFilteredItems","Catalog")"
+            });
+        })
+    </script>
+}
