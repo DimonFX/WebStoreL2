@@ -13,6 +13,7 @@ using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastruction.Middleware;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
@@ -32,6 +33,8 @@ namespace WebStore
             //services.AddDbContext<WebStoreDB>(opt =>
             //    opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddTransient<WebStoreDBInitializer>();
+
+            services.AddSignalR();
 
             services.AddIdentity<User, Role>()
                //.AddEntityFrameworkStores<WebStoreDB>()
@@ -131,10 +134,12 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/greetings", async context =>
-                {
-                    await context.Response.WriteAsync(Configuration["CustomGreetings"]);
-                });
+                endpoints.MapHub<InformationHub>("/info");
+
+                //endpoints.MapGet("/greetings", async context =>
+                //{
+                //    await context.Response.WriteAsync(Configuration["CustomGreetings"]);
+                //});
 
                 endpoints.MapControllerRoute(
                     name: "areas",
