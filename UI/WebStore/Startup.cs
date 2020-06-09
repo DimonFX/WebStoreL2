@@ -91,6 +91,9 @@ namespace WebStore
              *  - нужно что бы можно  было править представление и после этого сразу могли видеть изменения!!!
              */
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
+
             //Регистрируем наши собственные сервисы
             /*
              * AddTransient - каждый раз будет создаваться экземпляр сервиса. Предпочтителен для многопоточного режима
@@ -117,9 +120,12 @@ namespace WebStore
             {
                 //Отражает подробности об ошибках
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 //добавляет связь с браузером, что бы была возможность автоматом обновлять во всех браузерах (даже различных) наши веб страницы
                 app.UseBrowserLink();
             }
+
+            app.UseBlazorFrameworkFiles();
 
             app.UseStaticFiles();
             app.UseDefaultFiles();
@@ -135,6 +141,9 @@ namespace WebStore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<InformationHub>("/info");
+
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("blazor.html");
 
                 //endpoints.MapGet("/greetings", async context =>
                 //{
