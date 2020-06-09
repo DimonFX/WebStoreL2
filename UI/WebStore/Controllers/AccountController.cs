@@ -16,6 +16,14 @@ namespace WebStore.Controllers
             _UserManager = UserManager;
             _SignInManager = SignInManager;
         }
+        
+        public async Task<IActionResult> IsNameFree(string UserName)
+        {
+            var user = await _UserManager.FindByNameAsync(UserName);
+            if (user != null)
+                return Json("пользователь уже существует");
+            return Json("true");
+        }
 
         #region Регистрация пользователя в системе
 
