@@ -17,7 +17,7 @@ namespace WebStore.Data
                 SurName = "Иванов",
                 FirstName = "Иван",
                 Patronymic = "Иванович",
-                Age = 39
+                Age = 38
             },
             new Employee
             {
